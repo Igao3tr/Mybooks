@@ -6,9 +6,9 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 // NUNCA coloque a senha do banco ou a service_role key neste arquivo.
 // ============================================================
 const SUPABASE_URL = 'https://mhodxuollvsobxkytasp.supabase.co';
-const SUPABASE_ANON_KEY = 'COLE_SUA_ANON_KEY_AQUI';
+const SUPABASE_ANON_KEY = 'sb_publishable_QRbjoRaeXckfxDzkSxPwTQ_zDeI0c1q';
 
-const configured = SUPABASE_ANON_KEY !== 'COLE_SUA_ANON_KEY_AQUI';
+const configured = SUPABASE_ANON_KEY !== 'sb_publishable_QRbjoRaeXckfxDzkSxPwTQ_zDeI0c1q';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const state = { books: [], search: '', filter: 'todos' };
