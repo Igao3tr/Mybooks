@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minhas Leituras</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap"
+  rel="stylesheet"
+>
+ 
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">L</div>
+        <div>
+          <strong>Minhas Leituras</strong>
+          <span>diário de livros</span>
+        </div>
+      </div>
+
+      <nav>
+        <a class="nav-item active" href="#biblioteca" data-view="biblioteca">
+          <span>▦</span> Biblioteca
+        </a>
+        <a class="nav-item" href="#novo" data-view="novo">
+          <span>＋</span> Adicionar livro
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span id="connection-dot" class="status-dot"></span>
+        <span id="connection-text">Conectando...</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">SEU ACERVO</p>
+          <h1 id="page-title">Biblioteca</h1>
+        </div>
+        <button class="primary-btn" id="new-book-btn">+ Adicionar livro</button>
+      </header>
+
+      <section id="biblioteca-view" class="view active-view">
+        <div class="stats">
+          <div class="stat-card">
+            <span>Total de livros</span>
+            <strong id="total-count">—</strong>
+          </div>
+          <div class="stat-card">
+            <span>Lendo agora</span>
+            <strong id="reading-count">—</strong>
+          </div>
+          <div class="stat-card">
+            <span>Concluídos</span>
+            <strong id="finished-count">—</strong>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-wrap">
+            <span>⌕</span>
+            <input id="search" type="search" placeholder="Buscar por título ou ISBN..." />
+          </div>
+          <select id="filter">
+            <option value="todos">Todos</option>
+            <option value="lendo">Lendo</option>
+            <option value="concluidos">Concluídos</option>
+            <option value="nao-iniciados">Não iniciados</option>
+          </select>
+        </div>
+
+        <div id="books" class="book-list"></div>
+        <div id="empty" class="empty-state hidden">
+          <div class="empty-icon">◌</div>
+          <h2>Nenhum livro encontrado</h2>
+          <p>Adicione seu primeiro livro ou ajuste a busca.</p>
+          <button class="secondary-btn" id="empty-new-btn">Adicionar livro</button>
+        </div>
+      </section>
+
+      <section id="novo-view" class="view">
+        <div class="form-card">
+          <div class="form-heading">
+            <p class="eyebrow">NOVA LEITURA</p>
+            <h2>Adicionar livro</h2>
+            <p>Registre uma leitura. O ISBN é opcional.</p>
+          </div>
+          <form id="book-form">
+            <label>
+              Nome do livro <span>*</span>
+              <input id="nome_livro" name="nome_livro" required maxlength="255" placeholder="Ex.: O Som e a Fúria" />
+            </label>
+
+            <label>
+              ISBN <small>(opcional)</small>
+              <div class="isbn-row">
+                <input id="isbn" name="isbn" inputmode="numeric" maxlength="13" placeholder="978..." />
+                <button type="button" class="lookup-btn" id="lookup-isbn-btn">Buscar</button>
+              </div>
+              <p id="isbn-message" class="field-message">Ao informar um ISBN válido, as páginas serão buscadas automaticamente.</p>
+            </label>
+
+            <label>
+              Páginas <small>(preenchido pelo ISBN, mas pode editar)</small>
+              <input id="paginas" name="paginas" type="number" min="1" step="1" placeholder="Ex.: 320" />
+            </label>
+
+            <div class="date-grid">
+              <label>
+                Data de início <small>(opcional)</small>
+                <input id="data_inicio" name="data_inicio" type="date" />
+              </label>
+              <label>
+                Data de término <small>(opcional)</small>
+                <input id="data_fim" name="data_fim" type="date" />
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="secondary-btn" id="cancel-btn">Cancelar</button>
+              <button type="submit" class="primary-btn" id="save-btn">Salvar livro</button>
+            </div>
+            <p id="form-message" class="form-message"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <template id="book-template">
+    <article class="book-card">
+      <div class="book-cover"><span>BOOK</span></div>
+      <div class="book-info">
+        <div class="book-title-row">
+          <h3 class="book-title"></h3>
+         <div class="book-actions">
+  <button class="edit-btn" type="button" title="Editar livro">
+    Editar
+  </button>
+
+  <button class="delete-btn" type="button" title="Excluir livro" aria-label="Excluir livro">
+    ×
+  </button>
+</div>
+
+        </div>
+        <div class="book-meta"></div>
+        <div class="progress-row">
+          <span class="status-badge"></span>
+          <span class="dates"></span>
+        </div>
+      </div>
+    </article>
+  </template>
+<div id="edit-modal" class="modal hidden">
+  <div class="modal-overlay" id="edit-modal-overlay"></div>
+
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <p class="eyebrow">EDITAR LIVRO</p>
+        <h2>Editar leitura</h2>
+      </div>
+
+      <button
+        type="button"
+        class="modal-close"
+        id="edit-modal-close"
+        aria-label="Fechar"
+      >
+        ×
+      </button>
+    </div>
+
+    <form id="edit-form">
+
+      <label>
+        Nome do livro
+        <span>*</span>
+        <input
+          id="edit-nome_livro"
+          type="text"
+          maxlength="255"
+          required
+        />
+      </label>
+
+      <label>
+        ISBN
+        <small>(opcional)</small>
+        <input
+          id="edit-isbn"
+          type="text"
+          inputmode="numeric"
+          maxlength="13"
+        />
+      </label>
+
+      <label>
+        Páginas
+        <input
+          id="edit-paginas"
+          type="number"
+          min="1"
+          step="1"
+        />
+      </label>
+
+      <label>
+        Status
+        <select id="edit-status">
+          <option value="Não iniciado">Não iniciado</option>
+          <option value="Lendo">Lendo</option>
+          <option value="Concluído">Concluído</option>
+        </select>
+      </label>
+
+      <div class="date-grid">
+        <label>
+          Data de início
+          <input id="edit-data_inicio" type="date" />
+        </label>
+
+        <label>
+          Data de término
+          <input id="edit-data_fim" type="date" />
+        </label>
+      </div>
+
+      <p id="edit-message" class="form-message"></p>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="secondary-btn"
+          id="edit-cancel-btn"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="primary-btn"
+          id="edit-save-btn"
+        >
+          Salvar alterações
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+  <script type="module" src="app.js"></script>
+  
+</body>
+</html>

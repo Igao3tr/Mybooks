@@ -1,144 +1,301 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Minhas Leituras</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Leituras — Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f7f5f0;
+            color: #242321;
+            font-family: Arial, Helvetica, sans-serif;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 430px;
+            padding: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: #252422;
+            color: #f7f5f0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .logo-text span {
+            display: block;
+            margin-top: 3px;
+            color: #817d76;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        .card {
+            background: #fffdf9;
+            border: 1px solid #dfdcd5;
+            border-radius: 15px;
+            padding: 38px 30px 32px;
+
+            box-shadow: 0 2px 8px rgba(40, 38, 34, 0.03);
+        }
+
+        .eyebrow {
+            color: #8a857c;
+            font-size: 11px;
+            letter-spacing: 2px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #242321;
+        }
+
+        .description {
+            color: #817d76;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .divider {
+            height: 1px;
+            background: #dedbd4;
+            margin-bottom: 28px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            height: 44px;
+            padding: 0 14px;
+
+            border: 1px solid #d8d5ce;
+            border-radius: 8px;
+            background: #fffefa;
+
+            color: #292825;
+            font-size: 14px;
+
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        input:focus {
+            border-color: #817d76;
+            box-shadow: 0 0 0 3px rgba(129, 125, 118, 0.10);
+        }
+
+        .password-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .forgot {
+            color: #6f6b64;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 46px;
+            margin-top: 4px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: #252422;
+            color: #fffdf9;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+        }
+
+        .login-button:hover {
+            background: #363430;
+        }
+
+        .login-button:active {
+            transform: translateY(1px);
+        }
+
+        .register {
+            text-align: center;
+            margin-top: 25px;
+            color: #817d76;
+            font-size: 13px;
+        }
+
+        .register a {
+            color: #252422;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .register a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 22px;
+            color: #aaa69e;
+            font-size: 11px;
+        }
+
+        @media (max-width: 500px) {
+            .login-container {
+                padding: 16px;
+            }
+
+            .card {
+                padding: 30px 22px 26px;
+            }
+
+            h1 {
+                font-size: 29px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-mark">L</div>
-        <div>
-          <strong>Minhas Leituras</strong>
-          <span>diário de livros</span>
-        </div>
-      </div>
 
-      <nav>
-        <a class="nav-item active" href="#biblioteca" data-view="biblioteca">
-          <span>▦</span> Biblioteca
-        </a>
-        <a class="nav-item" href="#novo" data-view="novo">
-          <span>＋</span> Adicionar livro
-        </a>
-      </nav>
+    <main class="login-container">
 
-      <div class="sidebar-footer">
-        <span id="connection-dot" class="status-dot"></span>
-        <span id="connection-text">Conectando...</span>
-      </div>
-    </aside>
+        <div class="logo">
+            <div class="logo-icon">L</div>
 
-    <main class="main">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">SEU ACERVO</p>
-          <h1 id="page-title">Biblioteca</h1>
-        </div>
-        <button class="primary-btn" id="new-book-btn">+ Adicionar livro</button>
-      </header>
-
-      <section id="biblioteca-view" class="view active-view">
-        <div class="stats">
-          <div class="stat-card">
-            <span>Total de livros</span>
-            <strong id="total-count">—</strong>
-          </div>
-          <div class="stat-card">
-            <span>Lendo agora</span>
-            <strong id="reading-count">—</strong>
-          </div>
-          <div class="stat-card">
-            <span>Concluídos</span>
-            <strong id="finished-count">—</strong>
-          </div>
-        </div>
-
-        <div class="toolbar">
-          <div class="search-wrap">
-            <span>⌕</span>
-            <input id="search" type="search" placeholder="Buscar por título ou ISBN..." />
-          </div>
-          <select id="filter">
-            <option value="todos">Todos</option>
-            <option value="lendo">Lendo</option>
-            <option value="concluidos">Concluídos</option>
-            <option value="nao-iniciados">Não iniciados</option>
-          </select>
-        </div>
-
-        <div id="books" class="book-list"></div>
-        <div id="empty" class="empty-state hidden">
-          <div class="empty-icon">◌</div>
-          <h2>Nenhum livro encontrado</h2>
-          <p>Adicione seu primeiro livro ou ajuste a busca.</p>
-          <button class="secondary-btn" id="empty-new-btn">Adicionar livro</button>
-        </div>
-      </section>
-
-      <section id="novo-view" class="view">
-        <div class="form-card">
-          <div class="form-heading">
-            <p class="eyebrow">NOVA LEITURA</p>
-            <h2>Adicionar livro</h2>
-            <p>Registre uma leitura. O ISBN é opcional.</p>
-          </div>
-          <form id="book-form">
-            <label>
-              Nome do livro <span>*</span>
-              <input id="nome_livro" name="nome_livro" required maxlength="255" placeholder="Ex.: O Som e a Fúria" />
-            </label>
-
-            <label>
-              ISBN <small>(opcional)</small>
-              <input id="isbn" name="isbn" inputmode="numeric" maxlength="13" placeholder="978..." />
-            </label>
-
-            <div class="date-grid">
-              <label>
-                Data de início <small>(opcional)</small>
-                <input id="data_inicio" name="data_inicio" type="date" />
-              </label>
-              <label>
-                Data de término <small>(opcional)</small>
-                <input id="data_fim" name="data_fim" type="date" />
-              </label>
+            <div class="logo-text">
+                Minhas Leituras
+                <span>diário de livros</span>
             </div>
-
-            <div class="form-actions">
-              <button type="button" class="secondary-btn" id="cancel-btn">Cancelar</button>
-              <button type="submit" class="primary-btn" id="save-btn">Salvar livro</button>
-            </div>
-            <p id="form-message" class="form-message"></p>
-          </form>
         </div>
-      </section>
+
+        <section class="card">
+
+            <div class="eyebrow">BEM-VINDO DE VOLTA</div>
+
+            <h1>Entrar</h1>
+
+            <p class="description">
+                Acesse sua biblioteca e continue suas leituras.
+            </p>
+
+            <div class="divider"></div>
+
+            <form id = "login-form">
+
+                <div class="field">
+                    <label for="email">E-mail</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="seu@email.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+
+                    <div class="password-header">
+                        <label for="senha">Senha</label>
+
+                        <a href="#" class="forgot">
+                            Esqueci minha senha
+                        </a>
+                    </div>
+
+                    <input
+                        type="password"
+                        id="senha"
+                        name="senha"
+                        placeholder="Digite sua senha"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+                <button type="submit" class="login-button" id="sub">
+                    Entrar
+                </button>
+
+            </form>
+
+            <p class="register">
+                Ainda não possui uma conta?
+                <a href="#">Criar conta</a>
+            </p>
+
+        </section>
+
+        <p class="footer">
+            Minhas Leituras · seu acervo pessoal
+        </p>
+
     </main>
-  </div>
-
-  <template id="book-template">
-    <article class="book-card">
-      <div class="book-cover"><span>BOOK</span></div>
-      <div class="book-info">
-        <div class="book-title-row">
-          <h3 class="book-title"></h3>
-          <button class="delete-btn" title="Excluir livro" aria-label="Excluir livro">×</button>
-        </div>
-        <div class="book-meta"></div>
-        <div class="progress-row">
-          <span class="status-badge"></span>
-          <span class="dates"></span>
-        </div>
-      </div>
-    </article>
-  </template>
-
-  <script type="module" src="app.js"></script>
+<script type ="module" src="app.js"></script>
 </body>
 </html>
