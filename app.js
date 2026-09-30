@@ -1,5 +1,6 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
+
 // ============================================================
 // CONFIGURAÇÃO
 // ============================================================
@@ -7,7 +8,7 @@ const SUPABASE_URL = 'https://mhodxuollvsobxkytasp.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ob2R4dW9sbHZzb2J4a3l0YXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5ODc4MjcsImV4cCI6MjEwNTU2MzgyN30.QMmPskWOp9MspbtcGjjTTtShJbfY0AZSIb9nVbfEciE'
 const configured = SUPABASE_ANON_KEY !== 'COLE_SUA_ANON_KEY_AQUI';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+let dados = "";
 const state = {
   books: [],
   search: '',
@@ -79,7 +80,7 @@ function escapeHtml(value = '') {
 async function login(email, senha) {
   const { data, error } = await supabase
     .from('login')
-    .select('email, senha')
+    .select('id,email, senha')
     .eq('email', email)
     .eq('senha', senha)
     .single();
@@ -92,11 +93,12 @@ async function login(email, senha) {
       mensagem: error.message
     };
   }
-
-  console.log('Login realizado');
+ 
+ localStorage.setItem('dados', JSON.stringify(data));
+  
 
 window.location.assign("biblio.html");
-
+console.log('Login realizado',data);
 
   return {
     sucesso: true,
@@ -288,12 +290,14 @@ async function loadBooks() {
     render();
     return;
   }
-
+  dados = JSON.parse(localStorage.getItem('dados'))
+  let dtid = dados.id
   const { data, error } = await supabase
     .from('Registros')
     .select(
-      'id, created_at, nome_livro, isbn, paginas, status, data_inicio, data_fim'
+      'id, created_at, nome_livro, isbn, paginas, status, data_inicio, data_fim, usuario'
     )
+    .eq('usuario',dtid)
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -704,6 +708,8 @@ onAll('.nav-item', 'click', e => {
 // ============================================================
 
 on('#book-form', 'submit', async e => {
+  dados = JSON.parse(localStorage.getItem('dados'))
+  console.log(dados)
   e.preventDefault();
 
   showFormMessage('');
@@ -797,6 +803,7 @@ on('#book-form', 'submit', async e => {
     btn.disabled = true;
     btn.textContent = 'Salvando...';
   }
+  let usuario = dados.id
 
   const { error } = await supabase
     .from('Registros')
@@ -806,7 +813,8 @@ on('#book-form', 'submit', async e => {
       paginas,
       status: 'Lendo',
       data_inicio,
-      data_fim
+      data_fim,
+      usuario
     });
 
   if (btn) {
